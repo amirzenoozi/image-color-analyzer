@@ -2,10 +2,16 @@
 In this simple script we extract the image colors by using python and `KMeans` clustring method
 
 
+## Requierments
+```bash
+pip install -r requirements.txt
+```
+
 ## Features
 - [x] Pie Chart
 - [x] CLI
-- [ ] Rest API
+- [x] Telegram Bot
+- [x] Rest API
 - [ ] Video Files
 
 ## CLI Options
