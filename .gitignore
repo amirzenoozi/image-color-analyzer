@@ -48,3 +48,8 @@ Thumbs.db
 # Just For This Project
 /images
 /results
+/upload
+/__pycache__
+/*/__pycache__
+*.jpg
+*.jpeg
