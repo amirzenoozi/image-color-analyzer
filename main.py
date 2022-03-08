@@ -1,9 +1,6 @@
-from collections import Counter
-from sklearn.cluster import KMeans
-from matplotlib import colors
+from script.analyzer import preprocess, save_pie_chart
+
 import argparse
-import matplotlib.pyplot as plt
-import numpy as np
 import cv2
 import os
 
@@ -18,39 +15,6 @@ def parse_args():
 
     return parser.parse_args()
 
-
-def preprocess(raw):
-    image = cv2.resize(raw, (900, 600), interpolation = cv2.INTER_AREA)                                          
-    image = image.reshape(image.shape[0]*image.shape[1], 3)
-    return image
-
-
-def rgb_to_hex(rgb_color):
-    hex_color = "#"
-    for i in rgb_color:
-        hex_color += ("{:02x}".format(int(i)))
-    return hex_color
-
-
-def analyze(img, args):
-    clf = KMeans(n_clusters = args.clusters)
-    color_labels = clf.fit_predict(img)
-    center_colors = clf.cluster_centers_
-    counts = Counter(color_labels)
-    ordered_colors = [center_colors[i] for i in counts.keys()]
-    hex_colors = [rgb_to_hex(ordered_colors[i]) for i in counts.keys()]
-
-    plt.figure(figsize = (12, 8))
-    plt.pie(counts.values(), labels = hex_colors, colors = hex_colors)
-
-    plt.savefig(f'{args.des}/{os.path.basename(args.src).split(".")[0]}.png')
-    print('===========================')
-    print('Found the following colors:')
-    for color in hex_colors:
-        print(f'- {color}')
-    print('===========================')
-
-
 def main():
     args = parse_args()
     if args is None:
@@ -63,7 +27,7 @@ def main():
     image = cv2.imread(args.src)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     modified_image = preprocess(image)
-    analyze(modified_image, args)
+    save_pie_chart(modified_image, args)
 
 if __name__ == '__main__':
     main()
